@@ -1,0 +1,40 @@
+import getpass
+import netmiko
+    
+##########################################################
+password = getpass.getpass('Enter your password: ')
+Network_device = {
+    "device_type": "",
+    "host": "192.168.56.101",
+    "username": "cisco",
+    "password": password
+}
+
+connectionType = input("Do you want to use telnet or SSH: ")
+
+backup = input("Would you like to create a backup: ")
+if connectionType == "telnet":
+    Network_device["device_type"] = "cisco_ios_telnet"
+    session = netmiko.ConnectHandler(**Network_device)
+    session.enable()
+    running_config = session.send_command("show running-config")
+    print(running_config)
+    session.send_command("exit")
+    commmand = True
+
+elif connectionType == "SSH":
+    Network_device["device_type"] = "cisco_ios_telnet"
+    session = netmiko.ConnectHandler(**Network_device)
+    session.enable()
+    running_config = session.send_command("show running-config")
+    print(running_config)
+    session.send_command("exit")
+    commmand = True
+    
+if backup == "yes":
+    file1 = open("config.txt", "w")
+    file1.write(running_config)
+
+    
+
+##########################
